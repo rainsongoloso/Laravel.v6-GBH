@@ -3,7 +3,7 @@ services:
 
   #PHP Service
   app:
-    container_name: app
+    container_name: rsonbhouse-app
     build:
       context: .
       dockerfile: Dockerfile
@@ -15,27 +15,38 @@ services:
     volumes:
       - ./:/var/www
       - ./deployment/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    environment:
+      VIRTUAL_HOST: rson.arnoldjoslive.com
     networks:
       - rsonapp-network
 
   #Nginx Service
   webserver:
-    container_name: webserver
-    image: nginx:alpine
-    restart: unless-stopped
-    tty: true
+    container_name: rsonbhouse-webserver
+    image: jwilder/nginx-proxy
+    container_name: nginx-proxy
     ports:
-      - "8000:80"
-      - "8500:443"
+      - "80:80"
     volumes:
       - ./:/var/www
+      - /var/run/docker.sock:/tmp/docker.sock:ro
       - ./deployment/nginx/:/etc/nginx/conf.d/
     networks:
       - rsonapp-network
+    # image: nginx:alpine
+    # restart: unless-stopped
+    # tty: true
+    # ports:
+    #   - "8000:80"
+    #   - "8500:443"
+    # volumes:
+    #   - ./:/var/www
+    #   - ./deployment/nginx/:/etc/nginx/conf.d/
+    #
 
   #MySQL Service
   db:
-    container_name: db
+    container_name: rsonbhouse-db
     image: mysql
     restart: always
     ports:
@@ -51,6 +62,11 @@ services:
     command: --default-authentication-plugin=mysql_native_password
 
 #Docker Networks
+# networks:
+# 	default:
+# 		external:
+# 			name:
+
 networks:
   rsonapp-network:
 
