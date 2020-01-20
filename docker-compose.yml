@@ -10,7 +10,7 @@ services:
     restart: unless-stopped
     tty: true
     expose:
-      - "9000"
+      - "80"
     working_dir: /var/www
     volumes:
       - ./:/var/www
@@ -21,18 +21,18 @@ services:
       - rsonapp-network
 
   #Nginx Service
-  webserver:
-    container_name: rsonbhouse-webserver
-    image: jwilder/nginx-proxy
-    container_name: nginx-proxy
-    ports:
-      - "80:80"
-    volumes:
-      - ./:/var/www
-      - /var/run/docker.sock:/tmp/docker.sock:ro
-      - ./deployment/nginx/:/etc/nginx/conf.d/
-    networks:
-      - rsonapp-network
+  # webserver:
+  #   container_name: rsonbhouse-webserver
+  #   image: jwilder/nginx-proxy
+  #   container_name: nginx-proxy
+  #   ports:
+  #     - "80:80"
+  #   volumes:
+  #     - ./:/var/www
+  #     - /var/run/docker.sock:/tmp/docker.sock:ro
+  #     - ./deployment/nginx/:/etc/nginx/conf.d/
+  #   networks:
+  #     - rsonapp-network
     # image: nginx:alpine
     # restart: unless-stopped
     # tty: true
