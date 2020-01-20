@@ -24,14 +24,13 @@ services:
     image: nginx:alpine
     restart: unless-stopped
     tty: true
-    ports:
-      - "8000:80"
-      - "8500:443"
     volumes:
       - ./:/var/www
       - ./deployment/nginx/:/etc/nginx/conf.d/
     networks:
       - rsonapp-network
+    environment:
+      VIRTUAL_HOST: rson.arnoldjoslive.com
 
   #MySQL Service
   db:
@@ -53,6 +52,7 @@ services:
 #Docker Networks
 networks:
   rsonapp-network:
+  nginx-proxy:
 
 #Docker Volumes
 volumes:
