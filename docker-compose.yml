@@ -3,7 +3,7 @@ services:
 
   #PHP Service
   app:
-    container_name: app
+    container_name: rson-app
     build:
       context: .
       dockerfile: Dockerfile
@@ -18,10 +18,12 @@ services:
 
   #Nginx Service
   webserver:
-    container_name: webserver
+    container_name: rson-nginx
     image: nginx:alpine
     restart: unless-stopped
     tty: true
+    ports:
+      - "8080:80"
     volumes:
       - ./:/var/www
       - ./deployment/nginx/:/etc/nginx/conf.d/
@@ -30,11 +32,11 @@ services:
 
   #MySQL Service
   db:
-    container_name: db
+    container_name: rson-mysql
     image: mysql
     restart: always
-    ports:
-      - 33060:3306
+    expose:
+      - "3306"
     environment:
       MYSQL_DATABASE: gboardinghouse
       MYSQL_ROOT_PASSWORD: admin
