@@ -32,10 +32,11 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.rson.rule=Host(`rson.arnoldjoslive.com`)"
-      - "traefik.http.routers.rson.entrypoints=web"
+			- "traefik.http.routers.rson.entrypoints=websecure"
+			- "traefik.http.routers.rson.tls.certresolver=mytlschallenge"
     networks:
       - default
-      - arnoldjos_reverse-proxy
+      - traefik-reverse-proxy
 
   #MySQL Service
   db:
@@ -53,7 +54,7 @@ services:
     command: --default-authentication-plugin=mysql_native_password
 
 networks:
-  arnoldjos_reverse-proxy:
+  traefik-reverse-proxy:
     external: true
 
 #Docker Volumes
