@@ -22,10 +22,10 @@ services:
     image: nginx:alpine
     restart: unless-stopped
     tty: true
-    expose:
-      - "80"
-      - "443"
+    ports:
+      - "80:80"
     volumes:
+      - ./:/var/www
       - ./deployment/nginx/:/etc/nginx/conf.d/
     labels:
       - "traefik.enable=true"
