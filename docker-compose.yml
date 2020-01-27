@@ -26,10 +26,7 @@ services:
       - "80"
       - "443"
     volumes:
-      - ./:/var/www
       - ./deployment/nginx/:/etc/nginx/conf.d/
-      - certbot-etc:/etc/letsencrypt
-      - certbot-var:/var/lib/letsencrypt
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.rson.rule=Host(`rson.arnoldjoslive.com`)"
@@ -55,16 +52,6 @@ services:
       - ./deployment/mysql/my.cnf:/etc/mysql/my.cnf
     command: --default-authentication-plugin=mysql_native_password
 
-  certbot:
-    container_name: rson-certbot
-    image: certbot/certbot
-    volumes:
-      - certbot-etc:/etc/letsencrypt
-      - certbot-var:/var/lib/letsencrypt
-      - ./:/var/www/public
-    depends_on:
-      - webserver
-    command: certonly --webroot --webroot-path=/var/www/public --email arnold.anaviso@gmail.com --agree-tos --no-eff-email --staging --force-renewal -d rson.arnoldjoslive.com
 
 networks:
   traefik-reverse-proxy:
@@ -73,5 +60,3 @@ networks:
 #Docker Volumes
 volumes:
   dbdata:
-  certbot-etc:
-  certbot-var:
